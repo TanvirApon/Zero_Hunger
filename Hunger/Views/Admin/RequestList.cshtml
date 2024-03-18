@@ -1,0 +1,66 @@
+﻿
+@model IEnumerable<Hunger.EF.tbl_request>
+
+
+
+    @{
+        ViewBag.Title = "RequestList";
+    }
+
+    <h2>RequestList</h2>
+
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.req_time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.col_time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.restaurent_id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.employee_id)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.req_time)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.col_time)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.restaurent_id)
+                </td>
+                @if (item.employee_id != null)
+                {
+                    <td>@item.employee.name</td>
+                }
+                else
+                {
+                    <td>
+                        <a href="/Admin/AssignEmployee/@item.id" class="btn btn-success">Assign Employee</a>
+                    </td>
+                }
+                <td>
+                    @Html.ActionLink("Delete", "Delete", new { id = item.id })
+                </td>
+            </tr>
+        }
+
+    </table>

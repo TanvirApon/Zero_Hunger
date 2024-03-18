@@ -1,0 +1,48 @@
+﻿
+@model IEnumerable<Hunger.EF.tbl_item>
+
+@{
+    ViewBag.Title = "ItemsInRequest";
+}
+
+<h2>ItemsInRequest</h2>
+
+<p>
+    <a href="/Resturant/AddItem/@ViewBag.reqID" class="btn btn-success">Add Item</a>
+</p>
+<div>
+    <a href="/Resturant/MyRequestList" class="btn btn-warning">Back To Request List</a>
+</div>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.quantity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.expire_date)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.expire_date)
+            </td>
+            <td>
+                <a href="/Resturant/DeleteItem/@item.id" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+    }
+
+</table>

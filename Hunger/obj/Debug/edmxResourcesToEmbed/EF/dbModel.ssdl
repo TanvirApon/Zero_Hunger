@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ZeroModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="tbl_admin">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="email" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tbl_employee">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="email" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tbl_item">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="quantity" Type="int" Nullable="false" />
+    <Property Name="expire_date" Type="datetime" Nullable="false" />
+    <Property Name="request_id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tbl_request">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="req_time" Type="datetime" Nullable="false" />
+    <Property Name="col_time" Type="datetime" Nullable="false" />
+    <Property Name="status" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="restaurent_id" Type="int" Nullable="false" />
+    <Property Name="employee_id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tbl_restaurant">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="email" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="location" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_tbl_item_tbl_request">
+    <End Role="tbl_request" Type="Self.tbl_request" Multiplicity="1" />
+    <End Role="tbl_item" Type="Self.tbl_item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_request">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="tbl_item">
+        <PropertyRef Name="request_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_request_tbl_employee">
+    <End Role="tbl_employee" Type="Self.tbl_employee" Multiplicity="1" />
+    <End Role="tbl_request" Type="Self.tbl_request" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_employee">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="tbl_request">
+        <PropertyRef Name="employee_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_request_tbl_restaurant">
+    <End Role="tbl_restaurant" Type="Self.tbl_restaurant" Multiplicity="1" />
+    <End Role="tbl_request" Type="Self.tbl_request" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_restaurant">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="tbl_request">
+        <PropertyRef Name="id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ZeroModelStoreContainer">
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_admin" EntityType="Self.tbl_admin" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_employee" EntityType="Self.tbl_employee" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_item" EntityType="Self.tbl_item" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_request" EntityType="Self.tbl_request" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tbl_restaurant" EntityType="Self.tbl_restaurant" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_tbl_item_tbl_request" Association="Self.FK_tbl_item_tbl_request">
+      <End Role="tbl_request" EntitySet="tbl_request" />
+      <End Role="tbl_item" EntitySet="tbl_item" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_request_tbl_employee" Association="Self.FK_tbl_request_tbl_employee">
+      <End Role="tbl_employee" EntitySet="tbl_employee" />
+      <End Role="tbl_request" EntitySet="tbl_request" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_request_tbl_restaurant" Association="Self.FK_tbl_request_tbl_restaurant">
+      <End Role="tbl_restaurant" EntitySet="tbl_restaurant" />
+      <End Role="tbl_request" EntitySet="tbl_request" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

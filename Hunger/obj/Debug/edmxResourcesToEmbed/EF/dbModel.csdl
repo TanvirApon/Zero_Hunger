@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ZeroModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="tbl_admin">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tbl_employee">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="tbl_request" Relationship="Self.FK_tbl_request_tbl_employee" FromRole="tbl_employee" ToRole="tbl_request" />
+  </EntityType>
+  <EntityType Name="tbl_item">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="quantity" Type="Int32" Nullable="false" />
+    <Property Name="expire_date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="request_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="tbl_request" Relationship="Self.FK_tbl_item_tbl_request" FromRole="tbl_item" ToRole="tbl_request" />
+  </EntityType>
+  <EntityType Name="tbl_request">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="req_time" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="col_time" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="restaurent_id" Type="Int32" Nullable="false" />
+    <Property Name="employee_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="tbl_employee" Relationship="Self.FK_tbl_request_tbl_employee" FromRole="tbl_request" ToRole="tbl_employee" />
+    <NavigationProperty Name="tbl_item" Relationship="Self.FK_tbl_item_tbl_request" FromRole="tbl_request" ToRole="tbl_item" />
+    <NavigationProperty Name="tbl_restaurant" Relationship="Self.FK_tbl_request_tbl_restaurant" FromRole="tbl_request" ToRole="tbl_restaurant" />
+  </EntityType>
+  <EntityType Name="tbl_restaurant">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="location" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="tbl_request" Relationship="Self.FK_tbl_request_tbl_restaurant" FromRole="tbl_restaurant" ToRole="tbl_request" />
+  </EntityType>
+  <Association Name="FK_tbl_request_tbl_employee">
+    <End Role="tbl_employee" Type="Self.tbl_employee" Multiplicity="1" />
+    <End Role="tbl_request" Type="Self.tbl_request" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_employee">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="tbl_request">
+        <PropertyRef Name="employee_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_item_tbl_request">
+    <End Role="tbl_request" Type="Self.tbl_request" Multiplicity="1" />
+    <End Role="tbl_item" Type="Self.tbl_item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_request">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="tbl_item">
+        <PropertyRef Name="request_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tbl_request_tbl_restaurant">
+    <End Role="tbl_restaurant" Type="Self.tbl_restaurant" Multiplicity="1" />
+    <End Role="tbl_request" Type="Self.tbl_request" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="tbl_restaurant">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="tbl_request">
+        <PropertyRef Name="id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ZeroEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="tbl_admin" EntityType="Self.tbl_admin" />
+    <EntitySet Name="tbl_employee" EntityType="Self.tbl_employee" />
+    <EntitySet Name="tbl_item" EntityType="Self.tbl_item" />
+    <EntitySet Name="tbl_request" EntityType="Self.tbl_request" />
+    <EntitySet Name="tbl_restaurant" EntityType="Self.tbl_restaurant" />
+    <AssociationSet Name="FK_tbl_request_tbl_employee" Association="Self.FK_tbl_request_tbl_employee">
+      <End Role="tbl_employee" EntitySet="tbl_employee" />
+      <End Role="tbl_request" EntitySet="tbl_request" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_item_tbl_request" Association="Self.FK_tbl_item_tbl_request">
+      <End Role="tbl_request" EntitySet="tbl_request" />
+      <End Role="tbl_item" EntitySet="tbl_item" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tbl_request_tbl_restaurant" Association="Self.FK_tbl_request_tbl_restaurant">
+      <End Role="tbl_restaurant" EntitySet="tbl_restaurant" />
+      <End Role="tbl_request" EntitySet="tbl_request" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

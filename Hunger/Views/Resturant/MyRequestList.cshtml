@@ -1,0 +1,58 @@
+﻿﻿@model IEnumerable <Hunger.EF.tbl_request>
+
+@{
+    ViewBag.Title = "MyRequestList";
+}
+
+<h2>MyRequestList</h2>
+
+<p>
+    <a href="/Resturant/AddRequest" class="btn btn-success">Add Request</a>
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.request_time)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.col_time)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.resturant_id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.employee_id)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.request_time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.col_time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.resturant.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.employee.Name)
+            </td>
+            <td>
+                <a href="/Resturant/ItemsInRequest/@item.ID" class="btn btn-success">Watch & Edit Items Into This Request</a>
+                @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.id })
+            </td>
+        </tr>
+    }
+
+</table>

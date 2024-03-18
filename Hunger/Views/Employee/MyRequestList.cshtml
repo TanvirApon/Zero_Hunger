@@ -1,0 +1,54 @@
+﻿﻿@model IEnumerable<Hunger.EF.tbl_request>
+
+@{
+    ViewBag.Title = "MyRequestList";
+}
+
+<h2>MyRequestList</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.request_time)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.col_time)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.resturant.name)
+        </th>
+        <th>
+            Action
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.request_time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.col_time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.resturant.name)
+            </td>
+            <td>
+                @if (item.Status == "Picking Up")
+                {<a href="/Employee/UpdateRequest/@item.id">Collection Done</a>}
+            </td>
+        </tr>
+    }
+
+</table>
